@@ -41,4 +41,14 @@ public class AuthController {
         String token = JwtUtil.generateToken(u.getId(), u.getEmail());
         return ResponseEntity.ok(Map.of("token", token));
     }
+
+    @PostMapping("/logout")
+    public ResponseEntity<?> logout(@RequestHeader(value = "Authorization", required = false) String authHeader) {
+        // In JWT-based systems, logout is primarily client-side (delete the token)
+        // This endpoint just confirms the logout action
+        if (authHeader == null || !authHeader.startsWith("Bearer ")) {
+            return ResponseEntity.status(401).body(Map.of("error", "missing_token"));
+        }
+        return ResponseEntity.ok(Map.of("message", "logged_out_successfully"));
+    }
 }
